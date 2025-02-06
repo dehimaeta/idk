@@ -16,17 +16,29 @@ char	*ft_strjoin(const char *s1, const char *s2)
 {
 	int		ls1;
 	int		ls2;
+	int		i;
+	int		j;
 	char	*str;
 
-	if (!s1 || !s2)
-		return (NULL);
+	i = -1;
+	j = -1;
 	ls1 = ft_strlen(s1);
 	ls2 = ft_strlen(s2);
 	str = malloc(sizeof(char) * (ls1 + ls2 + 1));
-	if (!str)
+	if (!str || !s1 || !s2)
 		return (NULL);
-	ft_memmove(str, s1, ls1);
-	ft_memmove(str + ls1, s2, ls2);
+	while (s1[++i] != '\0')
+		str[i] = s1[i];
+	while (s2[++j] != '\0')
+	{
+		str[i] = s2[j];
+		i++;
+	}
 	str[ls1 + ls2] = '\0';
 	return (str);
 }
+
+// int main(int argc, char **argv)
+// {
+// 	printf("%s\n", ft_strjoin(argv[1], argv[2]));
+// }

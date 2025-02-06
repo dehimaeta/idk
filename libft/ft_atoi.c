@@ -6,7 +6,7 @@
 /*   By: rmalkhas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 03:57:00 by rmalkhas          #+#    #+#             */
-/*   Updated: 2025/01/22 15:01:46 by rmalkhas         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:05:34 by rmalkhas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@ int	ft_atoi(const char *str)
 	{
 		str++;
 	}
-	while (*str == '+' || *str == '-')
+	if (*str == '-')
 	{
-		if (*str == '-')
-		{
-			sign *= -1;
-		}
+		sign = -1;
 		str++;
 	}
+	else if (*str == '+')
+		str++;
 	while (*str && (*str >= '0' && *str <= '9'))
 	{
 		result = (result * 10) + (*str - '0');
@@ -38,9 +37,10 @@ int	ft_atoi(const char *str)
 	}
 	return (result * sign);
 }
-/*int main()
-{
-	printf("%d\n",atoi("  		-+--+-2345mda"));
-	printf("%d\n",ft_atoi("  		-+--+-2345mda"));
-	return 0;
-}*/
+
+// int main()
+// {
+// 	printf("%d\n",atoi("  		-+--+-2345mda"));
+// 	printf("%d\n",ft_atoi("  		-+--+-2345mda"));
+// 	return 0;
+// }

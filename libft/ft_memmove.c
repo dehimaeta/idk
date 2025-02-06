@@ -28,3 +28,12 @@ void	*ft_memmove(void *dst, const void *src, size_t n)
 		ft_memcpy(dst, src, n);
 	return (dst);
 }
+
+// int main()
+// {
+// 	char i[] = "abcd";
+// 	char j[5];
+// 	ft_memmove(j, i, 5);
+// 	printf("%s\n", j);
+// 	return 0;
+// }

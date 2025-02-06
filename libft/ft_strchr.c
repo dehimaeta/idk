@@ -16,6 +16,7 @@ char	*ft_strchr(const char *st, int c)
 {
 	unsigned int	i;
 
+	i = 0;
 	while (st[i] && st[i] != (char )c)
 		i++;
 	if (st[i] == (char)c)
