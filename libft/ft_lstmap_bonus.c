@@ -33,3 +33,38 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	}
 	return (n_list);
 }
+
+// void *duplicate_content(void *content)
+// {
+//     return ft_strdup((char *)content);
+// }
+// void delete_content(void *content)
+// {
+//     free(content);
+// }
+// void print_list(t_list *lst)
+// {
+//     while (lst)
+// 	{
+// 		printf("%s\n", (char *)lst->content);
+// 		if (!lst->next)
+// 			break ;
+// 		lst = lst->next;
+// 	}
+// }
+// int main()
+// {
+//     char s1[] = "Hello";
+//     char s2[] = "World";
+//     char s3[] = "42";
+//     t_list *lst = ft_lstnew(s1);
+//     ft_lstadd_back(&lst, ft_lstnew(s2));
+//     ft_lstadd_back(&lst, ft_lstnew(s3));  
+//     printf("Original list:\n");
+//     print_list(lst);
+//     t_list *new_lst = ft_lstmap(lst, duplicate_content, delete_content);
+//     printf("\nMapped list:\n");
+//     print_list(new_lst);
+//     return 0;
+// }
+
