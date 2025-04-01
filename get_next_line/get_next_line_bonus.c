@@ -1,91 +1,88 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmalkhas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 19:30:27 by rmalkhas          #+#    #+#             */
-/*   Updated: 2025/03/27 19:30:27 by rmalkhas         ###   ########.fr       */
+/*   Created: 2025/02/21 18:21:00 by rmalkhas          #+#    #+#             */
+/*   Updated: 2025/02/21 18:21:00 by rmalkhas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static char	*fill_storage(int fd, char *storage, char *buffer)
+void	readline(int fd, char **str)
 {
-	ssize_t	bytes;
-	char	*temp;
+	char	*buf;
+	int		bytes;
 
-	bytes = 1;
-	while (bytes > 0)
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return ;
+	while (1)
 	{
-		bytes = read(fd, buffer, BUFFER_SIZE);
+		bytes = read(fd, buf, BUFFER_SIZE);
 		if (bytes == -1)
-			return (NULL);
-		else if (bytes == 0)
-			break ;
-		buffer[bytes] = '\0';
-		temp = storage;
-		storage = ft_strjoin(temp, buffer);
-		if (!storage)
 		{
-			free(temp);
-			temp = NULL;
-			return (NULL);
+			free(*str);
+			*str = NULL;
+			break ;
 		}
-		if (ft_strchr(buffer, '\n'))
+		buf[bytes] = '\0';
+		if (bytes == 0)
+			break ;
+		*str = ft_strjoin(*str, buf);
+		if (ft_strchr(*str, '\n'))
 			break ;
 	}
-	return (storage);
+	free(buf);
 }
 
-static char	*update_storage(char *final_line)
+char	*ft_remainder(char *str)
 {
-	char	*updated;
-	ssize_t	i;
+	char	*remainder;
+	int		i;
+	int		j;
 
-	if (!final_line)
+	if (!str)
 		return (NULL);
 	i = 0;
-	while (final_line[i] && final_line[i] != '\n' && final_line[i] != '\0')
+	while (str[i] && str[i] != '\n')
 		i++;
-	if (final_line[i] == '\0' || final_line[i + 1] == '\0')
+	if (str[i] == '\0')
+	{
+		free(str);
 		return (NULL);
-	updated = ft_substr(final_line, i + 1, ft_strlen(final_line) - i);
-	if (!updated)
+	}
+	remainder = (char *)malloc(sizeof(char) * (ft_strlen(str) - i));
+	if (!remainder)
 		return (NULL);
-	final_line[i + 1] = '\0';
-	if (*updated == '\0')
-		updated = NULL;
-	return (updated);
+	j = 0;
+	while (str[++i])
+		remainder[j++] = str[i];
+	remainder[j] = 0;
+	free(str);
+	return (remainder);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*storage[FOPEN_MAX];
-	char		*final_line;
-	char		*buffer;
+	static char	*str[1024];
+	char		*s;
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) || fd > FOPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	readline(fd, &str[fd]);
+	s = ft_cutstr(str[fd]);
+	if (s && !*s)
 	{
-		free(buffer);
-		free(storage[fd]);
-		buffer = NULL;
-		storage[fd] = NULL;
+		free(s);
+		free(str[fd]);
+		str[fd] = NULL;
+		s = NULL;
 		return (NULL);
 	}
-	final_line = fill_storage(fd, storage[fd], buffer);
-	free(buffer);
-	buffer = NULL;
-	if (!final_line || *final_line == '\0')
-	{
-		free(final_line);
-		return (NULL);
-	}
-	storage[fd] = update_storage(final_line);
-	return (final_line);
+	str[fd] = ft_remainder(str[fd]);
+	return (s);
 }

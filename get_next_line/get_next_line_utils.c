@@ -63,31 +63,27 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_cutstr(char *str)
 {
-	unsigned int	s_size;
-	size_t			i;
-	char			*substr;
+	int		i;
+	char	*s;
 
-	if (!s)
-		return (NULL);
-	s_size = ft_strlen(s);
-	if (start >= s_size)
-	{
-		substr = (char *)malloc(1);
-		if (!substr)
-			return (NULL);
-		substr[0] = '\0';
-		return (substr);
-	}
-	if (len > s_size - start)
-		len = s_size - start;
-	substr = (char *)malloc((len + 1) * sizeof(char));
-	if (!substr)
-		return (NULL);
 	i = 0;
-	while (i < len)
-		substr[i++] = s[start++];
-	substr[i] = '\0';
-	return (substr);
+	if (!str)
+		return (0);
+	while (str[i] && str[i] != '\n')
+		i++;
+	s = malloc(sizeof(char) * (i + 2));
+	if (!s)
+		return (0);
+	i = -1;
+	while (str[++i] && str[i] != '\n')
+		s[i] = str[i];
+	if (str[i] == '\n')
+	{
+		s[i] = str[i];
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
 }
